@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+  generateName: job-kasten-annotations-
+  namespace: kasten-io
+spec:
+  template:
+    spec:
+      containers:
+      - image: {{ .Values.job.image }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          ### Add required Kasten annotation to all VolumeSnapshotClasses
+          volumesnapshotclasses=$(oc get volumesnapshotclass -o jsonpath='{.items[*].metadata.name}')
+
+          # Loop through the VolumeSnapshotClass names.
+          for volumesnapshotclass in $volumesnapshotclasses; do
+            # Check if the annotation already exists on the VolumeSnapshotClass.
+            annotation=$(oc get volumesnapshotclass $volumesnapshotclass -o jsonpath='{.metadata.annotations.k10\.kasten\.io/is-snapshot-class}')
+            
+            # If the annotation does not exist, add it.
+            if [ -z "$annotation" ]; then
+              oc annotate volumesnapshotclass $volumesnapshotclass k10.kasten.io/is-snapshot-class="true"
+            fi
+          done
+
+          ### Add required Kasten annotation to StorageClasses to allow block export mode
+          # Array of provisioners that support block mode exports
+          # Update as needed
+          provisioners=("openshift-storage.rbd.csi.ceph.com" "ebs.csi.aws.com")
+
+          storageclasses=$(oc get storageclass -o jsonpath='{.items[*].metadata.name}')
+
+          for storageclass in $storageclasses; do
+            provisioner=$(oc get storageclass $storageclass -o jsonpath='{.provisioner}')
+            match=false
+            # Check provisioner against each value in provisioners array
+            for value in "${provisioners[@]}"; do
+              if [[ "$provisioner" == "$value" ]]; then
+                match=true
+                break 
+              fi 
+            done
+            # If a match has been found, add the annotation only if it does not exist yet.
+            if [[ "$match" = true ]]; then
+              annotation=$(kubectl get storageclass $storageclass -o jsonpath='{.metadata.annotations.k10\.kasten\.io/sc-supports-block-mode-exports}')
+
+              if [[ "$annotation" != "true" ]]; then
+                kubectl annotate storageclass $storageclass k10.kasten.io/sc-supports-block-mode-exports="true"
+              fi
+            fi
+          done
+        name: kasten-annotations
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccount: veeam-kasten-config-sa
+      serviceAccountName: veeam-kasten-config-sa
+      terminationGracePeriodSeconds: 360

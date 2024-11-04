@@ -1,0 +1,17 @@
+---
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+kastendrPassphrase:
+  key: secret/data/hub/kastendr-passphrase
+
+awsCreds:
+  key: secret/data/hub/aws-creds
+
+job:
+  image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+
+# Specify default Location Profile using values-kasten-defaults.yaml override
+kasten:
+  locationProfile: {}

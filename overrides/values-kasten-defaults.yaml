@@ -1,0 +1,12 @@
+---
+kasten:
+  locationProfile:
+    name: s3-immutable
+    bucketName: rhvp-test-bucket
+    region: us-east-1
+    immutable: true
+    protectionPeriod: 120h0m0s # 5 Days
+
+  policyDefaults:
+    presetName: daily-backup
+    ignoreExceptions: false

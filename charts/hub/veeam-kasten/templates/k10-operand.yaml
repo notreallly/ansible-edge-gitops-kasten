@@ -1,0 +1,25 @@
+apiVersion: apik10.kasten.io/v1alpha1
+kind: K10
+metadata:
+  annotations:
+    helm.sdk.operatorframework.io/rollback-force: 'false'
+  name: k10
+  namespace: kasten-io
+spec:
+  eula:
+    accept: true
+    company: {{ .Values.kasten.eula.company }}
+    email: {{ .Values.kasten.eula.email }}
+  auth:
+    openshift:
+      enabled: true
+      dashboardURL: "https://k10-route-kasten-io.{{ .Values.global.localClusterDomain }}/k10/"
+      openshiftURL: "https://api.{{ .Values.global.clusterDomain }}:6443"
+      insecureCA: true
+  route:
+    enabled: true
+    tls:
+      enabled: true
+  kastenDisasterRecovery:
+    quickMode:
+      enabled: true

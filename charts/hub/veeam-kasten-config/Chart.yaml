@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Resources to configure Veeam Kasten instance
+name: veeam-kasten-config
+version: 0.1.0

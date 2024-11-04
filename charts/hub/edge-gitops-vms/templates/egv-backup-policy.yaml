@@ -1,0 +1,24 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: "{{ .Values.vmNamespace }}-backup"
+  namespace: kasten-io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  actions:
+    - action: backup
+      backupParameters:
+        {{ if .Values.kasten.policyDefaults.ignoreExceptions }}
+        ignoreExceptions: true
+        {{- end }}
+  presetRef:
+    name: {{ .Values.kasten.policyDefaults.presetName }}
+    namespace: kasten-io
+  selector:
+    matchExpressions:
+      - key: k10.kasten.io/appNamespace
+        operator: In
+        values:
+          - {{ .Values.vmNamespace }}

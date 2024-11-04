@@ -1,6 +1,6 @@
 ---
 global:
-  pattern: ansible-edge-gitops
+  pattern: ansible-edge-gitops-kasten
 
   options:
     useCSV: false

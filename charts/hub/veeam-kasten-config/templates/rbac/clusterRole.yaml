@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: veeam-kasten-config-clusterrole
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+rules:
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshotclasses
+  verbs:
+  - patch
+  - get
+  - list
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - patch
+  - get
+  - list
