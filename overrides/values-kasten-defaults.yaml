@@ -1,11 +1,11 @@
 ---
 kasten:
   locationProfile:
-    name: s3-immutable
-    bucketName: rhvp-test-bucket
-    region: us-east-1
-    immutable: true
-    protectionPeriod: 120h0m0s # 5 Days
+    name: default-location-profile        
+    bucketName: your-bucket-name          # Replace with the AWS S3 bucket name to store backup data
+    region: us-east-1                     # Replace with the AWS S3 bucket region
+    immutable: false                      # Set true only if AWS S3 bucket was created with Versioning/Object Lock enabled; otherwise false 
+    protectionPeriod: 120h0m0s            # Adjust to specify amount of time for retained RestorePoints to remain immutable. Caution!
 
   policyDefaults:
     presetName: daily-backup
