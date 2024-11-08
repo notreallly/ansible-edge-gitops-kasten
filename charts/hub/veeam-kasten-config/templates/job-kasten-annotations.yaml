@@ -14,6 +14,18 @@ spec:
         - /bin/bash
         - -c
         - |
+          ### Loop until the default OCP-V StorageClass is found, indicating ODF has completed initial staging
+          while true; do
+            # Check if the StorageClass exists
+            if oc get storageclass ocs-storagecluster-ceph-rbd-virtualization &> /dev/null; then
+              echo "StorageClass 'ocs-storagecluster-ceph-rbd-virtualization' exists. Proceeding with annotations..."
+              break
+            else
+              echo "StorageClass 'ocs-storagecluster-ceph-rbd-virtualization' does not exist. Checking again in 30 seconds..."
+              sleep 30
+            fi
+          done
+
           ### Add required Kasten annotation to all VolumeSnapshotClasses
           volumesnapshotclasses=$(oc get volumesnapshotclass -o jsonpath='{.items[*].metadata.name}')
 
