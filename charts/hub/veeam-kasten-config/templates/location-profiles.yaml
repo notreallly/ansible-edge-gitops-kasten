@@ -1,4 +1,4 @@
-{{- $def := .Values.kastern.locationProfileDefaults }}
+{{- $def := .Values.kasten.locationProfileDefaults }}
 {{- range $lps, $lp := .Values.kasten.locationProfiles }}
 ---
 apiVersion: "external-secrets.io/v1beta1"
