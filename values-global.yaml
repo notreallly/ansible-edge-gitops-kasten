@@ -1,6 +1,8 @@
 ---
 global:
   pattern: ansible-edge-gitops-kasten
+  extraValueFiles:
+  - '/values-kasten.yaml'
 
   options:
     useCSV: false

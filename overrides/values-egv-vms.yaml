@@ -3,3 +3,6 @@ vms:
   kiosk:
     count: 2
     role: kiosk
+  test:
+    count: 1
+    role: demo
