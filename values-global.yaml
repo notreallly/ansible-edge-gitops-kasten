@@ -1,6 +1,8 @@
 ---
 global:
   pattern: ansible-edge-gitops-kasten
+  extraValueFiles:
+  - '/values-kasten.yaml'
 
   options:
     useCSV: false
@@ -15,6 +17,3 @@ main:
   multiSourceConfig:
     enabled: true
     clusterGroupChartVersion: 0.9.*
-
-  extraValueFiles:
-    - '/values-kasten.yaml'
