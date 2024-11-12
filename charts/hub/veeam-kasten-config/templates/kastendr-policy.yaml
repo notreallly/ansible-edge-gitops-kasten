@@ -11,7 +11,7 @@ spec:
     backupParameters:
       filters: {}
       profile:
-        name: {{ .Values.kasten.locationProfile.name }}
+        name: {{ .Values.kasten.policyDefaults.locationProfileName }}
         namespace: kasten-io 
   frequency: '@hourly'
   retention:

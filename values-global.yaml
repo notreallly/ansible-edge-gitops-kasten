@@ -15,3 +15,6 @@ main:
   multiSourceConfig:
     enabled: true
     clusterGroupChartVersion: 0.9.*
+
+  extraValueFiles:
+    - '/values-kasten.yaml'

@@ -118,7 +118,6 @@ clusterGroup:
       extraValueFiles:
         - '$patternref/overrides/values-egv-vms.yaml'
         - '$patternref/overrides/values-egv-{{ $.Values.global.clusterVersion }}.yaml'
-        - '$patternref/overrides/values-kasten-defaults.yaml'
       ignoreDifferences:
       - group: config.kio.kasten.io
         kind: Policy
@@ -136,8 +135,6 @@ clusterGroup:
       namespace: kasten-io
       project: hub
       path: charts/hub/veeam-kasten-config
-      extraValueFiles:
-        - '$patternref/overrides/values-kasten-defaults.yaml'
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []

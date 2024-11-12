@@ -22,14 +22,14 @@ spec:
       monthly: 12
       yearly: 7
     profile:
-      name: {{ .Values.kasten.locationProfile.name }}
+      name: {{ .Values.kasten.policyDefaults.locationProfileName }}
       namespace: kasten-io
     imageRepoProfile:
-      name: {{ .Values.kasten.locationProfile.name }}
+      name: {{ .Values.kasten.policyDefaults.locationProfileName }}
       namespace: kasten-io
   export:
     profile:
-      name: {{ .Values.kasten.locationProfile.name }}
+      name: {{ .Values.kasten.policyDefaults.locationProfileName }}
       namespace: kasten-io
     exportData:
       enabled: true

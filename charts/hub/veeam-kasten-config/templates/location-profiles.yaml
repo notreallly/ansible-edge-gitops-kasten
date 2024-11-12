@@ -1,0 +1,47 @@
+{{- $def := .Values.kastern.locationProfileDefaults }}
+{{- range $lps, $lp := .Values.kasten.locationProfiles }}
+---
+apiVersion: "external-secrets.io/v1beta1"
+kind: ExternalSecret
+metadata:
+  name: es-{{ $lp.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  refreshInterval: 90s
+  secretStoreRef:
+    name: {{ $.Values.secretStore.name }}
+    kind: {{ $.Values.secretStore.kind }}
+  target:
+    name: {{ $lp.name }}
+    template:
+  dataFrom:
+    - extract:
+        key: {{ coalesce $lp.secretKey $def.secretKey }}
+---
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: {{ $lp.name }}
+  namespace: kasten-io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  type: Location
+  locationSpec:
+    credential:
+      secretType: AwsAccessKey
+      secret:
+        apiVersion: v1
+        kind: Secret
+        name: {{ $lp.name }}
+        namespace: kasten-io
+    type: ObjectStore
+    objectStore:
+      name: {{ $lp.bucketName }}
+      objectStoreType: S3
+      region: {{ coalesce $lp.s3Region $def.s3Region }}
+      {{ if coalesce $lp.immutable $def.immutable }}
+      protectionPeriod: {{ coalesce $lp.protectionPeriod $def.protectionPeriod }}
+      {{- end }}
+{{- end }}
