@@ -40,9 +40,9 @@ clusterGroup:
 
   imperative:
     jobs:
-      - name: deploy-kubevirt-worker
-        playbook: ansible/deploy_kubevirt_worker.yml
-        verbosity: -vvv
+      #- name: deploy-kubevirt-worker
+      #  playbook: ansible/deploy_kubevirt_worker.yml
+      #  verbosity: -vvv
       - name: clean-golden-images
         playbook: ansible/odf_clean_pvcs.yml
         image: quay.io/hybridcloudpatterns/utility-container:latest
@@ -101,14 +101,14 @@ clusterGroup:
       project: hub
       path: charts/hub/cnv
 
-    odf:
-      name: odf
-      namespace: openshift-storage
-      project: hub
-      chart: openshift-data-foundations
-      chartVersion: 0.1.*
-      extraValueFiles:
-        - '$patternref/overrides/values-odf-chart.yaml'
+    #odf:
+    #  name: odf
+    #  namespace: openshift-storage
+    #  project: hub
+    #  chart: openshift-data-foundations
+    #  chartVersion: 0.1.*
+    #  extraValueFiles:
+    #    - '$patternref/overrides/values-odf-chart.yaml'
 
     edge-gitops-vms:
       name: edge-gitops-vms
